@@ -21,9 +21,11 @@ def orders(request):
 
 def certainOrder(request, order_id):
     if request.method == 'GET':
-        user_json = OrderServiceImple().getOrderByOrderID(order_id)
-
-        response = Response().success(user_json)
+        order_json = OrderServiceImple().getOrderByOrderID(order_id)
+        if order_json == None:
+            response = Response().failed()
+        else:
+            response = Response().success(order_json)
         return HttpResponse(json.dumps(response), content_type="application/json")
 
     elif request.method == 'PUT':
@@ -34,8 +36,8 @@ def certainOrder(request, order_id):
             return HttpResponse(json.dumps(response), content_type="application/json")
 
     elif request.method == 'DELETE':
-        user_json = OrderServiceImple().deleteOrder(order_id)
-        response = Response().success(user_json)
+        order_json = OrderServiceImple().deleteOrder(order_id)
+        response = Response().success(order_json)
         return HttpResponse(json.dumps(response), content_type="application/json")
 
     response = Response().failed()

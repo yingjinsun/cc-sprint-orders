@@ -46,6 +46,8 @@ class OrderServiceImple(object):
 
     def getOrderByOrderID(self, order_id):
         order = Order.objects.filter(orderID=order_id)
+        if len(order) == 0:
+            return None
         order = list(order.values())[0]
         res = {
             "userID": order["userID"],
