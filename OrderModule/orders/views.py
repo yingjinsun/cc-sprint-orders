@@ -52,9 +52,11 @@ def ordersWithField(request):
     paras = getParaFromURL(request)
     if not paras:
         return orders(request)
-    response = OrderServiceImple().getOrderByPara(paras)
-    if not response:
+    order_json = OrderServiceImple().getOrderByPara(paras)
+    if not order_json:
         response = Response().failed()
+    else:
+        response = Response().success(order_json)
     return HttpResponse(json.dumps(response), content_type="application/json")
 
 
