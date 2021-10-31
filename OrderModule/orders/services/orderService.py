@@ -17,7 +17,6 @@ class OrderServiceImple(object):
                 "createDate": order.createDate.strftime("%Y-%m-%d %H:%M:%S"),
                 "status": order.status
             })
-        print(lt)
         return lt
 
     def addOrder(self, request):
@@ -57,3 +56,44 @@ class OrderServiceImple(object):
             "status": order["status"]
         }
         return res
+
+    def getOrderByPara(self, paras):
+        query, fields, limit, offset = parseParas(paras)
+        orders = Order.objects.filter(**query)
+        fieldSet = fields.split(",")
+        lt = []
+        for order in orders.values():
+            dict = {}
+            for field in fieldSet:
+                if field == 'create_date':
+                    dict["createDate"] = order["createDate"].strftime("%Y-%m-%d %H:%M:%S")
+                else:
+                    dict[field] = order[field]
+            lt.append(dict)
+        return lt[offset:offset+limit]
+
+def parseParas(paras):
+    fields = 'orderID,userID,productID,quantity,create_date,status'
+    limit = 10
+    offset = 0
+    query = {}
+    for key in paras:
+        if key == 'orderID':
+            query['orderID'] = int(paras.get(key))
+        if key == 'userID':
+            query['userID'] = int(paras.get(key))
+        if key == 'productID':
+            query['productID'] = int(paras.get(key))
+        if key == 'quantity':
+            query['quantity'] = int(paras.get(key))
+        if key == 'create_date':
+            query['createDate'] = paras.get(key)
+        if key == 'status':
+            query['status'] = datetime.strptime(paras.get(key), "%Y-%m-%d %H:%M:%S")
+        if key == 'fields':
+            fields = paras.get(key)
+        if key == 'limit':
+            limit = int(paras.get(key))
+        if key == 'offset':
+            offset = int(paras.get(key))
+    return query, fields, limit, offset

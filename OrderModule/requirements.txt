@@ -19,3 +19,4 @@ urllib3==1.26.7
 Werkzeug==2.0.1
 
 Django~=3.2.8
+django-cors-headers==3.10.0

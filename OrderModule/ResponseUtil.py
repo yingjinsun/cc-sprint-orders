@@ -14,3 +14,9 @@ class Response(object):
         self.response["code"] = Constant().NOT_FOUND
         self.response["message"] = "failed"
         return self.response
+
+    def resp(self, code, data):
+        self.response["code"] = code
+        self.response["message"] = None
+        self.response["data"] = data
+        return self.response
