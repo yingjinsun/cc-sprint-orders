@@ -9,25 +9,31 @@ def orders(request):
     if request.method == 'GET':
         order_list_json = OrderServiceImple().getAllOrders()
         if not order_list_json:
-            response = Response().failed()
+            response = Response().failed()      # 404
         else:
             response = Response().success(order_list_json)
         return HttpResponse(json.dumps(response), content_type="application/json")
     elif request.method == 'POST':
         requestDict = eval(request.body)
+        if 'notification' in requestDict:
+            response = Response().resp(Constant().OK, None)     # 200
+            return HttpResponse(json.dumps(response), content_type="application/json")
         if requestDict:
             result = OrderServiceImple().addOrder(requestDict)
-            response = Response().resp(Constant().POST, result)
+            response = Response().resp(Constant().POST, result)     # 201
             return HttpResponse(json.dumps(response), content_type="application/json")
     response = Response().failed()
     return HttpResponse(json.dumps(response), content_type="application/json")
 
 
 def certainOrder(request, order_id):
+    if not order_id:
+        response = Response().resp(Constant().BAD_DATA, None)  # 400
+        return HttpResponse(json.dumps(response), content_type="application/json")
     if request.method == 'GET':
         order_json = OrderServiceImple().getOrderByOrderID(order_id)
         if order_json is None:
-            response = Response().failed()
+            response = Response().failed()  # 404
         else:
             response = Response().success(order_json)
         return HttpResponse(json.dumps(response), content_type="application/json")
@@ -36,12 +42,12 @@ def certainOrder(request, order_id):
         requestDict = eval(request.body)
         if requestDict:
             result = OrderServiceImple().updateOrder(requestDict, order_id)
-            response = Response().success(result)
+            response = Response().success(result)   # 200
             return HttpResponse(json.dumps(response), content_type="application/json")
 
     elif request.method == 'DELETE':
         order_json = OrderServiceImple().deleteOrder(order_id)
-        response = Response().resp(Constant().DELETE, order_json)
+        response = Response().resp(Constant().DELETE, order_json)  # 204
         return HttpResponse(json.dumps(response), content_type="application/json")
 
     response = Response().failed()

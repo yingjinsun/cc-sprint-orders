@@ -7,3 +7,4 @@ class Constant(object):
         self.BAD_DATA = 400
         self.SOMETHING_WRONG = 422
         self.SERVER_ERROR = 500
+        self.NOT_LOGIN = 403

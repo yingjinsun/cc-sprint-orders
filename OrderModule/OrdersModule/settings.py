@@ -51,6 +51,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'orders.middleware.security.Security',
+    'orders.middleware.notification.Notification',
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True

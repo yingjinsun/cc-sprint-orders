@@ -11,3 +11,14 @@ class Order(models.Model):
     createDate = models.DateTimeField(max_length=50, auto_now=True)
     status = models.CharField(max_length=100)
 
+
+class User(models.Model):
+
+    userID = models.AutoField(primary_key=True)
+    nameLast = models.CharField(max_length=50)
+    nameFirst = models.CharField(max_length=50)
+    email = models.CharField(max_length=50)
+    userAddress = models.CharField(max_length=50)
+
+    class Meta:
+        db_table = 'infos_user'
