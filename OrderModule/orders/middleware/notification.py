@@ -23,10 +23,12 @@ def after_request(request, dic):
         requestDict = eval(request.body)
         if 'notification' in requestDict:
             notification = requestDict['notification']
-            client = boto3.client('sns', region_name='us-east-1', aws_access_key_id='AKIARMJPIQNED64WNJNG'
+        else:
+            notification = 'Congrats! Your order is placed successfully!'
+        client = boto3.client('sns', region_name='us-east-1', aws_access_key_id='AKIARMJPIQNED64WNJNG'
                                   , aws_secret_access_key='NJPyk0TYGUqjrG9wm6Yv7wJWM4p8pyTpJwTErBsr')
-            client.publish(
+        client.publish(
                 TargetArn='arn:aws:sns:us-east-1:095125275464:Could_Computing_Test',
                 Message=json.dumps({'default': notification}),
                 MessageStructure='json'
-            )
+        )

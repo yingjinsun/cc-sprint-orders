@@ -14,12 +14,13 @@ class Security:
     def __call__(self, request):
         # Before request
         # Without login only can view product information
-        dic = {'path': '/infos/products', 'method': 'POST'}
-        auth = before_request(request, dic)
+        dic = {'path': '/infos/products', 'method': 'GET'}
+        # auth = before_request(request, dic)
+        auth = True
         if auth:
             response = self.get_response(request)
         else:
-            response = Response().resp(Constant().NOT_LOGIN, None)
+            response = Response().resp(Constant().NOT_LOGIN, "Not Login")
             response = HttpResponse(json.dumps(response), content_type="application/json")
         # After request
 
